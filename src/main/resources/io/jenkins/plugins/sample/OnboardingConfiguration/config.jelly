@@ -7,6 +7,5 @@
                 <f:entry title="Description" field="description">
                         <f:textarea/>
                 </f:entry>
-                <f:submit value="Save"/>
         </f:section>
 </j:jelly>
