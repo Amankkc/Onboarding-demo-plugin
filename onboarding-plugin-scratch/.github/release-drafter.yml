@@ -1,0 +1,2 @@
+_extends: .github
+tag-template: onboarding-plugin-scratch-$NEXT_MINOR_VERSION
