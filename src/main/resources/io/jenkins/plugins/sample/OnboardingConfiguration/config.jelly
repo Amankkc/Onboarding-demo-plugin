@@ -7,5 +7,21 @@
                 <f:entry title="Description" field="description">
                         <f:textarea/>
                 </f:entry>
+                <f:block>
+                        <table>
+                                <f:optionalBlock name="dynamic" title="Necessary configuration for a connection">
+                                        <f:entry title="User Name">
+                                                <f:textbox field="username" />
+                                        </f:entry>
+                                        <f:entry title="Password">
+                                                <f:password field="password" />
+                                        </f:entry>
+                                    <f:entry title="URL">
+                                        <f:textbox field="url" />
+                                    </f:entry>
+                                </f:optionalBlock>
+                        </table>
+                </f:block>
+
         </f:section>
 </j:jelly>
