@@ -1,6 +1,11 @@
 package io.jenkins.plugins.sample;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.ServletException;
@@ -9,11 +14,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.verb.POST;
 
 import hudson.Extension;
 import hudson.util.FormValidation;
 import hudson.util.Secret;
 import jenkins.model.GlobalConfiguration;
+
 
 @Extension
 @Symbol("onboardingPlugin")
@@ -143,4 +150,30 @@ public class OnboardingConfiguration extends GlobalConfiguration {
         }
         return FormValidation.ok("URL is valid.");
     }
+
+    @POST
+    public FormValidation doTestConnection(@QueryParameter String url, @QueryParameter String username, @QueryParameter Secret password) throws IOException, InterruptedException {
+        String credentials = String.join(":", username, password.getPlainText());
+        String headerValue = "Basic " + Base64.getEncoder().encodeToString(credentials.getBytes());
+        var client = HttpClient.newHttpClient();
+
+        var request = HttpRequest.newBuilder()
+                                 .uri(URI.create(url))
+                                 .header("Authorization", headerValue)
+                                 .GET()
+                                 .build();
+
+        try {
+            var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                return FormValidation.error("Connection Failed: Provided configuration details are not correct. Response Code: " + response.statusCode());
+            }
+
+            return FormValidation.ok("Connection Success!!!");
+        } catch (IOException | InterruptedException e) {
+            return FormValidation.error("Connection Failed: " + e.getMessage());
+        }
+    }
+
 }
