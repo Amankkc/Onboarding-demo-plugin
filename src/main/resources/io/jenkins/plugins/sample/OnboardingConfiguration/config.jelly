@@ -7,9 +7,10 @@
                 <f:entry title="Description" field="description">
                         <f:textarea/>
                 </f:entry>
-                <f:block>
-                        <table>
-                                <f:optionalBlock name="dynamic" title="Necessary configuration for a connection">
+<!--                <f:block>-->
+<!--                        <table>-->
+<!--                                <f:optionalBlock name="dynamic" title="Necessary configuration for a connection">-->
+                <f:advanced title="Connection Options">
                                         <f:entry title="User Name">
                                                 <f:textbox field="username" />
                                         </f:entry>
@@ -19,11 +20,19 @@
                                     <f:entry title="URL">
                                         <f:textbox field="url" />
                                     </f:entry>
-                                        <f:validateButton title="Test Connection" method="testConnection"
-                                                          with="url,username,password" />
-                                </f:optionalBlock>
-                        </table>
-                </f:block>
+                    <:validateButton title="Test Connection" method="testConnection"
+                                      with="url,username,password" />
+                    <f:entry title="CredentialsId" field="credentialsId">
+                        <f:select/>
+                    </f:entry>
+                    <f:validateButton title="Test Payload" method="testPayload"
+                                      with="url,username,credentialsId" />
+
+                </f:advanced>
+            <f:property field="categoryConfig"/>
+<!--                                </f:optionalBlock>-->
+<!--                        </table>-->
+<!--                </f:block>-->
 
         </f:section>
 </j:jelly>
